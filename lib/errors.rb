@@ -2,3 +2,6 @@
 
 class DuplicateProductError < StandardError
 end
+
+class DuplicateCustomer < StandardError
+	end
