@@ -1,5 +1,5 @@
 class Product
-  attr_reader :title, :price, :stock 
+  attr_reader :title, :price, :stock, :brand
 
   @@products = []
 
@@ -7,6 +7,7 @@ class Product
     @title = options[:title]
     @price = options[:price]
     @stock = options[:stock]
+    @brand = options[:brand]
     add_to_products
   end
 
@@ -22,7 +23,13 @@ class Product
     @stock != 0
   end
 
-  
+  def decrease_stock
+    @stock -= 1
+  end
+
+  def increase_stock
+    @stock +=1
+  end
   
   def self.in_stock
     @@products.find_all {|product| product.in_stock?}
@@ -31,7 +38,6 @@ class Product
   private
 
   def add_to_products
-
     unless (@@products.any? { |product| product.title == title})
       @@products << self
     else  
@@ -39,5 +45,3 @@ class Product
       end
   end
 end
-
-

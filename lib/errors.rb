@@ -1,7 +1,8 @@
  # lib/errors.rb
-
 class DuplicateProductError < StandardError
 end
 
-class DuplicateCustomer < StandardError
-	end
+class DuplicateCustomerError < StandardError
+end
+class OutOfStockError < StandardError
+end
