@@ -4,6 +4,7 @@ require_relative "lib/product"
 require_relative "lib/transaction"
 
 
+
 # PRODUCTS
 
 Product.new(title: "LEGO Iron Man vs. Ultron", price: 22.99, stock: 55, brand: "LEGO")
@@ -37,6 +38,7 @@ puts products_in_stock.include?(firehouse) # Should return false
 Customer.new(name: "Walter Latimer")
 Customer.new(name: "Julia Van Cleve")
 
+
 puts Customer.all.count # Should return 2
 
 # Customer.new(name: "Walter Latimer")
@@ -60,7 +62,7 @@ puts nanoblock.stock # Should return 11
 
 # PURCHASES
 
-puts walter.purchase(nanoblock)
+walter.purchase(nanoblock)
 
 puts Transaction.all.count # Should return 2 
 transaction2 = Transaction.find(2)
@@ -70,12 +72,25 @@ puts transaction2.product == nanoblock # Should return true
 #walter.purchase(firehouse)
 # Should return OutOfStockError: 'LEGO Firehouse Headquarter' is out of stock.
 
+
+
+
 puts
 puts "Additional features"
+puts "*" * 20
+# Adding new product, brand, customer, customer id and timestamp
 
-# Adding new products and adding brand 
-
-crazyman = Product.new(title: "Crazyman", price: 15.00, stock: 2, brand: "Matell")
+crazyman = Product.new(title: "Crazyman", price: 15.99, stock: 2, brand: "Matel")
 puts crazyman.title  #return crazyman
-puts crazyman.price #should return 15.00
+puts crazyman.price #should return 15.99
+Customer.new(name: "Johnny Appleseed") #new customer
+puts Customer.all.count # Should return 3
+customer_three = Customer.find(3) # Search for a customer with ID 3
+puts customer_three # Should return Johnny appleseed
+Johnny = Customer.find_by_name("Johnny Appleseed")
+Johnny.purchase(crazyman)
+timestamp = Transaction.find(3)
+puts timestamp #list timestamp, purchase
+
+
 

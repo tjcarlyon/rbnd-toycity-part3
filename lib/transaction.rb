@@ -1,48 +1,42 @@
 class Transaction
+  attr_reader :id, :customer, :product, :date
 
-	attr_reader :customer, :product, :id
+  @@transactions = []
+  @@transaction_id = 0
 
-	@@transactions = []
-	@@id = 0
+  def initialize(customer, product)
+    @customer = customer
+    @product = product
+    @id = @@transaction_id += 1
+    @date = Time.now.strftime("%A, %d %b %Y %l:%M %p") # timestamp
+    sale_transaction
+  end
 
-	def initialize(customer,product)
-		@customer = customer
-		@product = product
-		@@id += 1
-		@id = @@id
-	    add_transaction
-	end
+  def self.all
+    @@transactions
+  end
 
-	def self.all
-		@@transactions
-	end
-	
-	def self.id
-		@@id
-	end
+  def self.find(id)
+    @@transactions.find {|transaction| transaction.id == id}
+  end
 
-	def self.find(id)
-		@@transactions.find {|transaction| transaction.id == id}
-	end
+  def self.in_stock
+    @@products.find_all {|product| product.in_stock?}
+  end
 
-	def add_transaction
-    	if product.in_stock?  
-      		@@transactions << self
-      		product.decrease_stock
-    	else
-      		raise OutOfStockError, "'#{product.title}' is out of stock."
-    	end
-  	end
+  def to_s
+    "Transaction ID: #{@id} Sale Date: #{@date} Customer: #{@customer} Product Purchased: #{@product}"
+  end
 
-  	def self.delete(id)
-  		@@transactions.delete {|transaction| transaction.id == id}
-  	end
+ private
 
-  	def self.returns(id)
-  		find_transaction = self.find(id)
-  		find_transaction.product.increase_stock
-  		@@transactions.delete_if {|transaction| transaction == find_transaction}
-  	end
-
+  def sale_transaction
+    if product.in_stock?
+      product.purchase
+    else
+      raise OutOfStockError, "#{product.title} is out of stock."
+    end
+    @@transactions << self
+  end
 
 end

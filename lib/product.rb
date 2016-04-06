@@ -3,6 +3,7 @@ class Product
 
   @@products = []
 
+
   def initialize(options={})
     @title = options[:title]
     @price = options[:price]
@@ -15,33 +16,43 @@ class Product
     @@products
   end
 
-  def self.find_by_title(title)
-    @@products.find {|product| product.title == title}
-  end 
-
-  def in_stock?
-    @stock != 0
+  def self.find_by_title(product_title)
+    @@products.each do |product|
+      if product.title == product_title
+      return product
+      end
+    end
   end
 
-  def decrease_stock
+  def in_stock?
+    @stock > 0
+  end
+
+  def purchase
     @stock -= 1
   end
 
-  def increase_stock
-    @stock +=1
-  end
-  
   def self.in_stock
     @@products.find_all {|product| product.in_stock?}
   end
 
+  def to_s
+    "#{@title}"
+  end
+
+ 
+  
+
+
   private
 
   def add_to_products
-    unless (@@products.any? { |product| product.title == title})
-      @@products << self
-    else  
-      raise DuplicateProductError, " '#{title}' already exists."
+    @@products.each do |add_product|
+      if add_product.title == @title
+        raise DuplicateProductError, "#{@title} already exists."
       end
+    end
+    @@products << self
   end
+
 end
